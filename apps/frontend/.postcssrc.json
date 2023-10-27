@@ -1,0 +1,11 @@
+{
+    "map": false,
+    "plugins": {
+        "postcss-pxtorem": {
+            "propList": [
+                "*"
+            ],
+            "mediaQuery": true
+        }
+    }
+}

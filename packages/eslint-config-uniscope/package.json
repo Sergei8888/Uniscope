@@ -1,0 +1,14 @@
+{
+    "name": "eslint-config-uniscope",
+    "description": "Shareable ESLint config for Uniscope (JS, TS)",
+    "author": "Sergei Kuzmenkov",
+    "version": "0.0.1",
+    "main": ".eslintrc.js",
+    "private": true,
+    "dependencies": {
+        "eslint": "^8.21.0",
+        "eslint-config-turbo": "^0.0.8",
+        "eslint-plugin-prettier": "^4.2.1",
+        "prettier": "^2.7.1"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "name": "uniscope",
+    "description": "Uniscope remote observations project",
+    "author": "Sergei Kuzmenkov, Vlad Uhvatov",
+    "private": true,
+    "packageManager": "pnpm@8.6.6",
+    "scripts": {
+        "build:base-image": "docker build -t uniscope-base:latest -f base.dockerfile .",
+        "compose:dev:build": "pnpm run build:base-image && turbo build:dev-image",
+        "compose:dev:down": "docker compose -f docker-compose.yml --env-file .env.local-prod down",
+        "compose:dev:up": "docker compose -f docker-compose.yml --env-file .env.local-prod up --remove-orphans -d",
+        "compose:dev:restart": "pnpm compose:dev:down && pnpm compose:dev:up"
+    },
+    "engines": {
+        "node": "^18.16.1",
+        "pnpm": "^8.6.6"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "dotenv-cli": "^7.2.1",
+        "pm2": "^5.3.0",
+        "prettier": "^2.7.1"
+    }
+}

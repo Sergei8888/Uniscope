@@ -1,0 +1,17 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "//#database-cluster:restart": {
+            "cache": false
+        },
+        "//#build:base-image": {
+            "cache": false
+        },
+        "build:dev-image": {
+            "cache": false
+        },
+        "lint": {
+            "cache": false
+        }
+    }
+}

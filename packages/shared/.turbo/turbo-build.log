@@ -1,0 +1,16 @@
+
+> @uniscope/shared@1.0.0 build /Users/sergei888/WebstormProjects/uniscope/packages/shared
+> pnpm run build:clean && pnpm run compile && pnpm run fuxup
+
+
+> @uniscope/shared@1.0.0 build:clean /Users/sergei888/WebstormProjects/uniscope/packages/shared
+> rm -rf ./build
+
+
+> @uniscope/shared@1.0.0 compile /Users/sergei888/WebstormProjects/uniscope/packages/shared
+> tsc -b tsconfig.nest.json tsconfig.vite.json
+
+
+> @uniscope/shared@1.0.0 fuxup /Users/sergei888/WebstormProjects/uniscope/packages/shared
+> cp internal-package-jsons/vite/package.json vite && cp internal-package-jsons/nest/package.json nest
+

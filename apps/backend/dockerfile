@@ -1,0 +1,15 @@
+ARG DOCKER_REGISTRY
+
+FROM ${DOCKER_REGISTRY}/uniscope-base as uniscope-backend-builder
+
+WORKDIR /usr/src/uniscope
+
+RUN turbo build:independent-package --filter=backend
+
+FROM node:18-alpine as uniscope-backend
+
+WORKDIR /usr/src/uniscope/backend
+
+COPY --from=uniscope-backend-builder /usr/src/uniscope/apps/backend/backend-deploy .
+
+ENTRYPOINT ["node", "./dist/main.js" ]

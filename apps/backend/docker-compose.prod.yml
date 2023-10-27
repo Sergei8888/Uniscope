@@ -1,0 +1,52 @@
+version: '3.5'
+
+services:
+    backend:
+        image: ${DOCKER_REGISTRY}/uniscope-backend:latest
+        container_name: ${BACKEND_HOST}
+        environment:
+            NODE_ENV: ${NODE_ENV}
+            POSTGRES_HOST: ${POSTGRES_HOST}
+            POSTGRES_PORT: ${POSTGRES_PORT}
+            POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+            POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            BACKEND_PORT: ${BACKEND_PORT}
+            BACKEND_HOST: ${BACKEND_HOST}
+            VITE_HOST: ${VITE_HOST}
+            VITE_PORT: ${VITE_PORT}
+            CORS_LIST: ${CORS_LIST}
+            TELESCOPE_CONNECTOR_PORT: ${TELESCOPE_CONNECTOR_PORT}
+            TELESCOPE_CONNECTOR_NAMESPACE: ${TELESCOPE_CONNECTOR_NAMESPACE}
+            TELESCOPE_CONNECTOR_PATH: ${TELESCOPE_CONNECTOR_PATH}
+            PRIVATE_AUTH_JWT_KEY_PATH: ${PRIVATE_AUTH_JWT_KEY_PATH}
+            PUBLIC_AUTH_JWT_KEY_PATH: ${PUBLIC_AUTH_JWT_KEY_PATH}
+            MAIL_SENDER_LOGIN: ${MAIL_SENDER_LOGIN}
+            MAIL_RECEIVER_LOGIN: ${MAIL_RECEIVER_LOGIN}
+            MAIL_SENDER_PASSWORD: ${MAIL_SENDER_PASSWORD}
+            MAIL_HOST: ${MAIL_HOST}
+        expose:
+            - ${BACKEND_PORT}
+        healthcheck:
+            test: wget http://localhost:${BACKEND_PORT}/api/health --no-verbose --tries=1 --spider || exit
+            interval: 10s
+            timeout: 10s
+            retries: 3
+        labels:
+            - "traefik.enable=true"
+            # Rest API
+            - "traefik.http.routers.uniscope-backend-rest_r.entrypoints=https"
+            - "traefik.http.routers.uniscope-backend-rest_r.rule=Host(`${VITE_HOST}`) && PathPrefix(`/api`)"
+            - "traefik.http.routers.uniscope-backend-rest_r.middlewares=rate_limit@file"
+            - "traefik.http.routers.uniscope-backend-rest_r.service=uniscope-backend-rest_s"
+            - "traefik.http.services.uniscope-backend-rest_s.loadbalancer.server.port=${BACKEND_PORT}"
+            - "traefik.http.routers.uniscope-backend-rest_r.tls=true"
+            - "traefik.http.routers.uniscope-backend-rest_r.tls.certresolver=letsEncrypt"
+            # Telescope connector (socket.io)
+            - "traefik.http.routers.uniscope-backend-telescope-connector_r.entrypoints=https"
+            - "traefik.http.routers.uniscope-backend-telescope-connector_r.rule=Host(`${VITE_HOST}`) && PathPrefix(`${TELESCOPE_CONNECTOR_PATH}`)"
+            - "traefik.http.routers.uniscope-backend-telescope-connector_r.middlewares=rate_limit@file"
+            - "traefik.http.routers.uniscope-backend-telescope-connector_r.service=uniscope-backend-telescope-connector_s"
+            - "traefik.http.services.uniscope-backend-telescope-connector_s.loadbalancer.server.port=${TELESCOPE_CONNECTOR_PORT}"
+            - "traefik.http.routers.uniscope-backend-telescope-connector_r.tls=true"
+            - "traefik.http.routers.uniscope-backend-telescope-connector_r.tls.certresolver=letsEncrypt"

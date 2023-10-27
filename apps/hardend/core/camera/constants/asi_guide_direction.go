@@ -1,0 +1,10 @@
+package constants
+
+type ASI_GUIDE_DIRECTION uint8
+
+const (
+	ASI_GUIDE_NORTH = iota
+	ASI_GUIDE_SOUTH
+	ASI_GUIDE_EAST
+	ASI_GUIDE_WEST
+)

@@ -1,0 +1,29 @@
+api:
+    dashboard: true
+
+entryPoints:
+    dashboard:
+        address: ":8080"
+    http:
+        address: ":80"
+    https:
+        address: ":443"
+
+log:
+    level: INFO
+
+accessLog: { }
+
+providers:
+    docker:
+        exposedByDefault: false
+    file:
+        filename: /etc/traefik/dynamic.yml
+
+certificatesResolvers:
+    letsEncrypt:
+        acme:
+            email: uniscope.space@gmail.com
+            storage: /letsencrypt/acme.json
+            httpChallenge:
+                entryPoint: http

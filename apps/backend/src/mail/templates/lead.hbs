@@ -1,0 +1,181 @@
+<!--Основная информация о телескопе-->
+<img width="500px" src="data:{{file.mime}};base64,{{file.base64}}" alt="Фотография телескопа">
+<table style="min-width: 500px">
+    <thead>
+    <tr>
+        <th colspan="2" style="height: 60px; background: #282828; color: #FFFFFF">Основная информация о телескопе</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr id="telescopeNameColumn" style="height: 60px">
+        <td style="padding-left: 30px">Наименование</td>
+        <td style="padding-left: 30px">{{ telescopeName }}</td>
+    </tr>
+
+    <tr id="telescopeDescriptionColumn" style="height: 60px; background: #F5F5F5">
+        <td style="padding-left: 30px">Описание</td>
+        <td style="padding-left: 30px">
+            {{#if telescopeDescription}}
+                {{ telescopeDescription }}
+            {{else}}
+                Отсуствует
+            {{/if}}
+        </td>
+    </tr>
+
+    <tr id="telescopeZoomColumn" style="height: 60px">
+        <td style="padding-left: 30px">Зум</td>
+        <td style="padding-left: 30px">
+            {{#if telescopeZoom}}
+                {{ telescopeZoom }}
+            {{else}}
+                Не указан
+            {{/if}}
+        </td>
+    </tr>
+
+    <tr id="telescopeLocationColumn" style="height: 60px; background: #F5F5F5">
+        <td style="padding-left: 30px">Местоположение</td>
+        <td style="padding-left: 30px">
+            <table>
+                <tr>
+                    <td style="padding-left: 30px; padding-right: 30px;">Широта</td>
+                    <td style="padding-left: 30px; padding-right: 30px;">{{ locationLat }}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 30px">Долгота</td>
+                    <td style="padding-left: 30px">{{ locationLng }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr id="telescopeTargetColumn" style="height: 60px">
+        <td style="padding-left: 30px">Цель съемки</td>
+        <td style="padding-left: 30px">{{ telescopeTarget }}</td>
+    </tr>
+    </tbody>
+</table>
+
+<!--Информация о камере-->
+<table style="min-width: 500px">
+    <thead>
+    <tr>
+        <th colspan="2" style="height: 60px; background: #282828; color: #FFFFFF">Информация о камере</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr id="cameraManufacturerColumn" style="height: 60px">
+        <td style="padding-left: 30px">Производитель</td>
+        <td style="padding-left: 30px">{{ cameraManufacturer }}</td>
+    </tr>
+    <tr id="cameraModelColumn" style="height: 60px; background: #F5F5F5">
+        <td style="padding-left: 30px">Модель</td>
+        <td style="padding-left: 30px">{{ cameraModel }}</td>
+    </tr>
+    <tr id="cameraResolutionColumn" style="height: 60px">
+        <td style="padding-left: 30px">Разрешение</td>
+        <td style="padding-left: 30px">
+            <table>
+                <tr>
+                    <td style="padding-left: 30px">Ширина</td>
+                    <td style="padding-left: 30px; padding-right: 30px;">{{ cameraResolutionWidth }}px</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 30px">Высота</td>
+                    <td style="padding-left: 30px; padding-right: 30px;">{{ cameraResolutionHeight }}px</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr id="cameraSensorSizeColumn" style="height: 60px; background: #F5F5F5">
+        <td style="padding-left: 30px">Размер сенсора</td>
+        <td style="padding-left: 30px">
+            {{#if cameraSensorSize}}
+                {{ cameraSensorSize }}мм
+            {{else}}
+                Не указан
+            {{/if}}
+        </td>
+    </tr>
+    <tr id="cameraPixelSizeColumn" style="height: 60px">
+        <td style="padding-left: 30px">Размер пикселя</td>
+        <td style="padding-left: 30px">
+            {{#if cameraPixelSize}}
+                {{ cameraPixelSize }}мм
+            {{else}}
+                Не указан
+            {{/if}}
+        </td>
+    </tr>
+    <tr id="cameraQuantumEfficiencyColumn" style="height: 60px; background: #F5F5F5">
+        <td style="padding-left: 30px">Квантовая эффективность</td>
+        <td style="padding-left: 30px">
+            {{#if cameraQuantumEfficiency}}
+                {{ cameraQuantumEfficiency }}%
+            {{else}}
+                Не указана
+            {{/if}}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Информация об оптической системе -->
+<table style="min-width: 500px">
+    <thead>
+    <tr>
+        <th colspan="2" style="height: 60px; background: #282828; color: #FFFFFF">Информация об оптической системе</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr id="opticalSystemManufacturerColumn" style="height: 60px">
+        <td style="padding-left: 30px">Производитель</td>
+        <td style="padding-left: 30px">{{ opticalSystemManufacturer }}</td>
+    </tr>
+    <tr id="opticalSystemModelColumn" style="height: 60px; background: #F5F5F5">
+        <td style="padding-left: 30px">Модель</td>
+        <td style="padding-left: 30px">{{ opticalSystemModel }}</td>
+    </tr>
+    <tr id="opticalSystemApertureColumn" style="height: 60px">
+        <td style="padding-left: 30px">Апертура</td>
+        <td style="padding-left: 30px">
+            {{#if opticalSystemAperture}}
+                {{ opticalSystemAperture }} мм
+            {{else}}
+                Не указана
+            {{/if}}
+        </td>
+    </tr>
+    <tr id="opticalSystemFocalLengthColumn" style="height: 60px; background: #F5F5F5">
+        <td style="padding-left: 30px">Фокусное расстояние</td>
+        <td style="padding-left: 30px">
+            {{#if opticalSystemFocalLength}}
+                {{ opticalSystemFocalLength }}мм
+            {{else}}
+                Не указан
+            {{/if}}
+        </td>
+    </tr>
+    <tr id="opticalSystemLuminosityColumn" style="height: 60px">
+        <td style="padding-left: 30px">Светочувствительность</td>
+        <td style="padding-left: 30px">
+            {{#if opticalSystemLuminosity}}
+                {{ opticalSystemLuminosity }}
+            {{else}}
+                Не указана
+            {{/if}}
+        </td>
+    </tr>
+    <tr id="opticalSystemTypeColumn" style="height: 60px; background: #F5F5F5">
+        <td style="padding-left: 30px">Тип оптической системы</td>
+        <td style="padding-left: 30px">
+            {{#if opticalSystemType}}
+                {{ opticalSystemType }}
+            {{else}}
+                Не указан
+            {{/if}}
+        </td>
+    </tr>
+    </tbody>
+</table>

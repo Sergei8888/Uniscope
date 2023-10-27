@@ -1,0 +1,17 @@
+{
+    "extends": [
+        "//"
+    ],
+    "pipeline": {
+        "build:local": {
+            "outputs": [
+                "./dist"
+            ]
+        },
+        "build:prod": {
+            "outputs": [
+                "./dist"
+            ]
+        }
+    }
+}

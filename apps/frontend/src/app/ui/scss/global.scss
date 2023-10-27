@@ -1,0 +1,90 @@
+@use "sass:map";
+@import "scss_variables";
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#app,
+.layout {
+    min-height: 100vh;
+}
+
+body {
+    color: var(--lightFontColor);
+    font-family: var(--baseFontFamily);
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 30px 0;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+a {
+    color: var(--lightFontColor);
+    font-family: var(--baseFontFamily);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(100%);
+}
+
+// Middle screen anchor
+.anchor {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, calc(-50% - 50vh));
+}
+
+// Bootstrap container
+.container {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: map.get($breakpoints, md)) {
+    .container {
+        width: 750px;
+    }
+}
+
+@media (min-width: map.get($breakpoints, lg)) {
+    .container {
+        width: 970px;
+    }
+}
+
+@media (min-width: map.get($breakpoints, xl)) {
+    .container {
+        width: 1170px;
+    }
+}

@@ -1,0 +1,47 @@
+http:
+    routers:
+        # Dashboard
+        api:
+            rule: PathPrefix(`/api`, `/dashboard`)
+            service: api@internal
+            middlewares:
+                - auth
+            entryPoints:
+                - dashboard
+            tls:
+                certResolver: letsEncrypt
+        http-to-https:
+            entryPoints:
+                - http
+            middlewares:
+                - https_redirect
+            rule: HostRegexp(`{any:.+}`)
+            service: noop
+    services:
+        # noop service, the URL will be never called
+        noop:
+            loadBalancer:
+                servers:
+                    -   url: http://192.168.0.1
+    middlewares:
+        rate_limit:
+            rateLimit:
+                average: 50
+                burst: 20
+                period: 1s
+        auth:
+            basicAuth:
+                removeHeader: true
+                users:
+                    - UniscopeTraefikDashboardUser:$2y$05$nDSbdTO4li/Be5DTKwSekeKmmyMgvHAbPEzkCmBJ6rxhrst2LVWSW
+        https_redirect:
+            redirectScheme:
+                scheme: https
+                permanent: true
+
+tls:
+    stores:
+        default:
+            defaultCertificate:
+                certFile: /etc/traefik/ssl/localhost.pem
+                keyFile: /etc/traefik/ssl/localhost-key.pem

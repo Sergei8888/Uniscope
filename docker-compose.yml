@@ -1,0 +1,92 @@
+version: '3.5'
+
+services:
+    # Proxy Traefik
+    traefik:
+        extends:
+            file: ./apps/proxy/docker-compose.prod.yml
+            service: traefik
+        ports:
+            - "80:80"
+            - "443:443"
+            - "8080:8080"
+        restart: unless-stopped
+        depends_on:
+            - backend
+
+    # Nest.js backend
+    backend:
+        extends:
+            file: ./apps/backend/docker-compose.prod.yml
+            service: backend
+        restart: unless-stopped
+        depends_on:
+            - postgres
+
+    # Nginx frontend
+    frontend:
+        extends:
+            file: ./apps/frontend/docker-compose.prod.yml
+            service: frontend
+        restart: unless-stopped
+        depends_on:
+            - backend
+
+    # Main SQL database (PostgreSQL)
+    postgres:
+        extends:
+            file: ./apps/database/docker-compose.prod.yml
+            service: postgres
+        restart: unless-stopped
+
+    # Admin panel for PostgreSQL
+    pgadmin:
+        extends:
+            file: ./apps/pgadmin/docker-compose.prod.yml
+            service: pgadmin
+        restart: unless-stopped
+        depends_on:
+            - postgres
+
+    # Static blob filestorage
+    minio:
+        extends:
+            file: ./apps/minio/docker-compose.prod.yml
+            service: minio
+        restart: unless-stopped
+
+    # Grafana monitoring UI
+    grafana:
+        extends:
+            file: ./apps/monitoring/grafana/docker-compose.prod.yml
+            service: grafana
+
+    # Metric database (Prometheus)
+    prometheus:
+        extends:
+            file: ./apps/monitoring/prometheus/docker-compose.prod.yml
+            service: prometheus
+
+    # Node metrics collector (Node Exporter)
+    node_exporter:
+        extends:
+            file: ./apps/monitoring/node-exporter/docker-compose.prod.yml
+            service: node_exporter
+
+    # Docker metrics collector (cAdvisor)
+    cadvisor:
+        extends:
+            file: ./apps/monitoring/cadvisor/docker-compose.prod.yml
+            service: cadvisor
+
+volumes:
+    postgres_data:
+        name: uniscope_postgres_data
+    grafana_data:
+        name: uniscope_grafana_data
+    prometheus_data:
+        name: uniscope_prometheus_data
+    pgadmin_data:
+        name: uniscope_pgadmin_data
+    minio_data:
+        name: uniscope_minio_data

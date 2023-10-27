@@ -1,0 +1,72 @@
+{
+    "name": "@uniscope/frontend",
+    "version": "0.0.1",
+    "author": "Sergei Kuzmenkov",
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev": "vite --mode=dev",
+        "build:prod": "pnpm types && vite build --mode=production",
+        "build:local": "pnpm types && vite build --mode=local-prod",
+        "build:dev-image": "pnpm run load-env:local -- pnpm run _build:dev-image",
+        "_build:dev-image": "docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY -f dockerfile-dev -t=uniscope-frontend:latest .",
+        "build:prod-image": "pnpm run load-env:prod -- pnpm run _build:prod-image",
+        "_build:prod-image": "docker build --build-arg DOCKER_REGISTRY=$DOCKER_REGISTRY -f dockerfile-prod -t=uniscope-frontend:latest .",
+        "preview": "pnpm types && vite preview",
+        "lint": "eslint \"./**/*.{js,ts,vue}\" --max-warnings 10",
+        "types": "vue-tsc --noEmit",
+        "lint:fix": "pnpm lint --fix",
+        "test-watch": "vitest --watch",
+        "load-env:local": "dotenv -e ../../.env.local-prod",
+        "load-env:prod": "dotenv -e ../../.env.production"
+    },
+    "dependencies": {
+        "@uniscope/shared": "workspace:*",
+        "axios": "^1.4.0",
+        "element-plus": "^2.3.7",
+        "normalize.css": "^8.0.1",
+        "pinia": "^2.1.4",
+        "pinia-plugin-persistedstate": "^3.1.0",
+        "socket.io-client": "^4.7.1",
+        "unplugin-auto-import": "^0.16.6",
+        "unplugin-vue-components": "^0.25.1",
+        "vite": "^4.4.2",
+        "vite-svg-loader": "^4.0.0",
+        "vue": "^3.3.4",
+        "vue-router": "^4.2.4",
+        "yandex-metrika-vue3": "^1.1.6"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.22.8",
+        "@types/node": "^20.4.1",
+        "@typescript-eslint/eslint-plugin": "^5.61.0",
+        "@typescript-eslint/parser": "^5.61.0",
+        "@vitejs/plugin-vue": "^4.2.3",
+        "dotenv": "^16.3.1",
+        "eslint": "^8.44.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-config-uniscope": "workspace:^0.0.1",
+        "eslint-import-resolver-alias": "^1.1.2",
+        "eslint-import-resolver-typescript": "^3.5.5",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-vue": "^9.15.1",
+        "postcss": "^8.4.25",
+        "postcss-pxtorem": "^6.0.0",
+        "postcss-scss": "^4.0.6",
+        "prettier": "^3.0.0",
+        "prettier-plugin-two-style-order": "^1.0.1",
+        "sass": "^1.63.6",
+        "stylelint": "^15.10.1",
+        "typescript": "^5.1.6",
+        "unplugin-fonts": "^1.0.3",
+        "vite-plugin-vue-layouts": "^0.8.0",
+        "vitest": "^0.33.0",
+        "vue-eslint-parser": "^9.3.1",
+        "vue-tsc": "^1.8.4"
+    },
+    "peerDependenciesMeta": {
+        "dotenv-cli": {
+            "optional": true
+        }
+    }
+}

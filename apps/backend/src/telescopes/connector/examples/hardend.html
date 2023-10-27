@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<ul id="message_list"></ul>
+<button type="button" id="message_send">Send</button>
+<textarea id="message_input" cols="180" rows="10"></textarea>
+
+<video id="video" playsinline autoplay muted width="500" height="500"></video>
+
+<script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+        integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+        crossorigin="anonymous"></script>
+<script>
+    const API_URL = "https://uniscope.astromodel.ru/api";
+    const SOCKET_URL = "https://uniscope.astromodel.ru/api";
+
+    let dc;
+    let pc;
+
+    const list = document.getElementById("message_list");
+    const textarea = document.getElementById("message_input");
+    const button = document.getElementById("message_send");
+
+    textarea.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            button.click();
+        }
+    });
+
+    button.addEventListener("click", () => {
+        list.appendChild(document.createElement("li")).textContent = textarea.value;
+        console.log("Sending message: ", textarea.value);
+        dc.send(textarea.value);
+        textarea.value = "";
+    });
+
+    // Login into account as a hardend
+    fetch(`${API_URL}/auth/signin?clientType=hardend`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            login: "TestUser",
+            password: "Testpassword888"
+        })
+    })
+        .then((res) => res.json())
+        .then(async (res) => {
+            // Open socketio connection
+            const socket = io(`${SOCKET_URL}/telescope-connector`, {
+                path: "/telescope-connector",
+                auth: {
+                    access_token: res.accessToken,
+                    telescopeId: 1
+                }
+            });
+
+            let makingOffer = false;
+            let ignoreOffer = false;
+            const polite = true;
+
+            // Get media stream
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            // Open peer connection
+            pc = new RTCPeerConnection({
+                iceServers: [{ "urls": "stun:stun.l.google.com:19302" }]
+            });
+            // Add track to connection
+            pc.addTrack(stream.getVideoTracks()[0], stream);
+
+            pc.addEventListener("datachannel", (event) => {
+                console.log("Received data channel: ", event);
+                dc = event.channel;
+                dc.addEventListener("message", (event) => {
+                    console.log("Received message: ", event.data);
+                    list.appendChild(document.createElement("li")).textContent = event.data;
+                });
+            });
+
+            pc.addEventListener("negotiationneeded", async () => {
+                console.log("Negotiation needed, making an offer");
+
+                try {
+                    makingOffer = true;
+                    await pc.setLocalDescription();
+                    socket.emit("message", {
+                        description: pc.localDescription
+                    });
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    makingOffer = false;
+                }
+
+                console.log("Offer sent: ", pc.localDescription);
+            });
+
+            pc.addEventListener("icecandidate", (event) => {
+                console.log("Sending ice candidate");
+                if (event.candidate) {
+                    socket.emit("message", {
+                        ice_candidate: event.candidate
+                    });
+                }
+            });
+
+            pc.addEventListener("track", (event) => {
+                console.log("Received track: ", event);
+                const video = document.getElementById("video");
+                video.srcObject = event.streams[0];
+            });
+
+            pc.addEventListener("connectionstatechange", (event) => {
+                if (pc.iceConnectionState === "failed") {
+                    console.log("Ice failed, restarting ice");
+                    pc.restartIce();
+                }
+            });
+
+            // Signalling server
+            socket.on("exception", (err) => {
+                console.error(err);
+            });
+
+            socket.on("message", async (message) => {
+                if (message.description) {
+                    await handleDescription(message.description);
+                } else if (message.ice_candidate) {
+                    await handleIceCandidate(message.ice_candidate);
+                }
+            });
+
+            socket.on("disconnect", () => {
+                console.log("disconnected");
+            });
+
+            async function handleDescription(description) {
+                console.log("Received description: ", description);
+                const offerCollision =
+                    description.type === "offer" &&
+                    (makingOffer || pc.signalingState !== "stable");
+
+                ignoreOffer = !polite && offerCollision;
+
+                if (ignoreOffer) {
+                    console.log("Ignoring offer");
+                    return;
+                }
+
+                await pc.setRemoteDescription(description);
+                if (description.type === "offer") {
+                    await pc.setLocalDescription();
+                    console.log("Answer sent: ", pc.localDescription);
+                    socket.emit("message", {
+                        description: pc.localDescription
+                    });
+                }
+            }
+
+            async function handleIceCandidate(candidate) {
+                console.log("Received ice candidate");
+                try {
+                    await pc.addIceCandidate(candidate);
+                } catch (err) {
+                    if (!ignoreOffer) {
+                        throw err;
+                    }
+                }
+            }
+        });
+
+</script>
+</body>
+</html>

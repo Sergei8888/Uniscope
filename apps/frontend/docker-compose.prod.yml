@@ -1,0 +1,18 @@
+version: '3.5'
+
+services:
+    frontend:
+        image: ${DOCKER_REGISTRY}/uniscope-frontend:latest
+        container_name: uniscope-frontend
+        environment:
+            VITE_HOST: ${VITE_HOST}
+        expose:
+            - 80
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.uniscope-frontend.entrypoints=https"
+            - "traefik.http.routers.uniscope-frontend.rule=Host(`${VITE_HOST}`)"
+            - "traefik.http.routers.uniscope-frontend.service=uniscope-frontend"
+            - "traefik.http.services.uniscope-frontend.loadbalancer.server.port=80"
+            - "traefik.http.routers.uniscope-frontend.tls=true"
+            - "traefik.http.routers.uniscope-frontend.tls.certresolver=letsEncrypt"

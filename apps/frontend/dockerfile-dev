@@ -1,0 +1,12 @@
+ARG DOCKER_REGISTRY
+
+FROM ${DOCKER_REGISTRY}/uniscope-base as uniscope-frontend-builder
+
+WORKDIR /usr/src/uniscope
+
+RUN turbo build:local --filter=frontend
+
+FROM nginx:latest as uniscope-frontend
+
+COPY --from=uniscope-frontend-builder /usr/src/uniscope/apps/frontend/dist /usr/share/nginx/html
+COPY --from=uniscope-frontend-builder /usr/src/uniscope/apps/frontend/nginx.conf /etc/nginx/

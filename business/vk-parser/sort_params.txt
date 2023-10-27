@@ -1,0 +1,8 @@
+{
+"last_online": 30,
+"city": [],
+"country": ["Russia"],
+"messages": 1,
+"friends": -1,
+"groups": 3
+}

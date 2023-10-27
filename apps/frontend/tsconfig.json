@@ -1,0 +1,41 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        },
+        "module": "esnext",
+        "target": "esnext",
+        "lib": [
+            "DOM",
+            "ESNext"
+        ],
+        "useDefineForClassFields": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "incremental": false,
+        "skipLibCheck": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "noUnusedLocals": true,
+        "allowJs": true,
+        "strictNullChecks": true,
+        "importHelpers": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "preserve",
+        "isolatedModules": true,
+        "noEmit": true,
+        "types": [
+            "vite/client",
+            "vite-plugin-vue-layouts/client"
+        ]
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "dist",
+        "node_modules"
+    ]
+}

@@ -1,0 +1,67 @@
+---
+asyncapi: 2.5.0
+info:
+    title: Uniscope async api
+    description: ''
+    version: 0.0.2
+
+servers:
+    telescope-connector:
+        url: https://uniscope.astromodel.ru/api/telescope-connector
+        protocol: socket-io
+        protocolVersion: '4'
+
+defaultContentType: application/json
+
+channels:
+    # Exceptions
+    exception:
+        subscribe:
+            message:
+                name: Exception
+                payload:
+                    type: array
+                    items:
+                        type: string
+    # Message (SDP or ICE candidate)
+    message:
+        subscribe:
+            message:
+                name: Message
+                payload:
+                    $ref: '#/components/schemas/MessageDto'
+        publish:
+            message:
+                name: Message
+                payload:
+                    $ref: '#/components/schemas/MessageDto'
+
+components:
+    schemas:
+        MessageDto:
+            type: object
+            oneOf:
+                -   $ref: '#/components/schemas/RtcSessionDescriptionDto'
+                -   $ref: '#/components/schemas/RtcIceCandidateDto'
+
+        RtcSessionDescriptionDto:
+            type: object
+            properties:
+                sdp:
+                    type: string
+            required:
+                - sdp
+
+        RtcIceCandidateDto:
+            type: object
+            properties:
+                candidate:
+                    type: string
+                sdpMid:
+                    type: string
+                sdpMLineIndex:
+                    type: number
+                usernameFragment:
+                    type: string
+            required:
+                - candidate

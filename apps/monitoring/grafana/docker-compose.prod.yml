@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+    grafana:
+        image: grafana/grafana:9.2.15
+        container_name: ${GRAFANA_HOST}
+        environment:
+            GRAFANA_HOST: ${GRAFANA_HOST}
+            VITE_HOST: ${VITE_HOST}
+            GF_SECURITY_ADMIN_USER: ${GF_SECURITY_ADMIN_USER}
+            GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD}
+        volumes:
+            - grafana_data:/var/lib/grafana
+            - ./grafana.ini:/etc/grafana/grafana.ini
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.uniscope-grafana.entrypoints=https"
+            - "traefik.http.routers.uniscope-grafana.rule=Host(`${VITE_HOST}`) && PathPrefix(`/monitoring`)"
+            - "traefik.http.routers.uniscope-grafana.service=uniscope-grafana"
+            - "traefik.http.services.uniscope-grafana.loadbalancer.server.port=3000"
+            - "traefik.http.routers.uniscope-grafana.tls=true"
+            - "traefik.http.routers.uniscope-grafana.tls.certresolver=letsEncrypt"

@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+    traefik:
+        container_name: uniscope-proxy
+        image: traefik:v2.10
+        command:
+            - "--configFile=/etc/traefik/traefik.yml"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /var/lib/uniscope-proxy/letsencrypt:/letsencrypt
+            - "./traefik.yml:/etc/traefik/traefik.yml:ro"
+            - "./dynamic.yml:/etc/traefik/dynamic.yml:ro"
+            - "./ssl:/etc/traefik/ssl:ro"

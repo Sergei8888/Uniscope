@@ -1,0 +1,8 @@
+{
+    "exec": "node ./dist index.js",
+    "ext": "ts,d.ts",
+    "watch": [
+        "./src/**",
+        "index.ts"
+    ]
+}

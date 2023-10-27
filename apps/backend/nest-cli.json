@@ -1,0 +1,31 @@
+{
+    "$schema": "https://json.schemastore.org/nest-cli",
+    "collection": "@nestjs/schematics",
+    "sourceRoot": "src",
+    "compilerOptions": {
+        "tsConfigPath": "tsconfig.json",
+        "watchAssets": true,
+        "assets": [
+            {
+                "include": "mail/templates/*.hbs"
+            },
+            {
+                "include": "docs/asyncapi/dist"
+            },
+            {
+                "include": "**/*.css"
+            }
+        ],
+        "plugins": [
+            {
+                "name": "@nestjs/swagger",
+                "options": {
+                    "classValidatorShim": true,
+                    "introspectComments": true,
+                    "controllerFileNameSuffix": ".controller.ts"
+                }
+            }
+        ],
+        "deleteOutDir": true
+    }
+}

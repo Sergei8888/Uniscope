@@ -1,0 +1,15 @@
+{
+    "extends": [
+        "//"
+    ],
+    "pipeline": {
+        "build:independent-package": {
+            "dependsOn": [
+                "@uniscope/shared#build"
+            ],
+            "outputs": [
+                "./backend-deploy/**/*"
+            ]
+        }
+    }
+}

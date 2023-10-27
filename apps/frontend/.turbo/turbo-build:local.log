@@ -1,0 +1,32 @@
+
+> @uniscope/frontend@0.0.1 build:local /Users/sergei888/WebstormProjects/uniscope/apps/frontend
+> pnpm types && vite build --mode=local-prod
+
+
+> @uniscope/frontend@0.0.1 types /Users/sergei888/WebstormProjects/uniscope/apps/frontend
+> vue-tsc --noEmit
+
+NODE_ENV=production is not supported in the .env file. Only NODE_ENV=development is supported to create a development build of your project. If you need to set process.env.NODE_ENV, you can set it in the Vite config instead.
+vite v4.4.2 building for local-prod...
+transforming...
+✓ 1519 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                           0.92 kB │ gzip:  0.49 kB
+dist/assets/vk-b7f7dcc7.png               4.28 kB
+dist/assets/tg-6248a334.png               4.80 kB
+dist/assets/youtube-b3ff2b80.png          7.05 kB
+dist/assets/logo-db1af8eb.png            16.96 kB
+dist/assets/astromodel-3defb6d1.png      22.21 kB
+dist/assets/23lyceum-99d4e63e.png        23.83 kB
+dist/assets/bfu-abe28e8c.png             54.69 kB
+dist/assets/fasi-7d763e52.png            73.33 kB
+dist/assets/future-school-3889071e.png  144.11 kB
+dist/assets/sergei-cd537205.png         590.60 kB
+dist/assets/pavel-57178195.jpg          652.92 kB
+dist/assets/alexander-1c79b044.png      724.50 kB
+dist/assets/DefaultLayout-a7af544c.css    5.05 kB │ gzip:  1.11 kB
+dist/assets/index-226b8f34.css           20.01 kB │ gzip:  4.85 kB
+dist/assets/DefaultLayout-576219a7.js     5.44 kB │ gzip:  2.04 kB
+dist/assets/index-5184a7f2.js           165.72 kB │ gzip: 64.44 kB
+✓ built in 3.25s
